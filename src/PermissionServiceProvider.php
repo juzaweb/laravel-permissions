@@ -5,7 +5,7 @@ namespace Juzaweb\Permissions;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Arr;
 use Illuminate\View\Compilers\BladeCompiler;
-use Juzaweb\Core\Providers\ServiceProvider;
+use Illuminate\Support\ServiceProvider;
 use Juzaweb\Permissions\Contracts\Permission as PermissionContract;
 use Juzaweb\Permissions\Contracts\Role as RoleContract;
 use Juzaweb\Permissions\Middleware\PermissionMiddleware;
@@ -38,6 +38,8 @@ class PermissionServiceProvider extends ServiceProvider
 
     public function register(): void
     {
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+
         $this->callAfterResolving(
             'blade.compiler',
             function (BladeCompiler $bladeCompiler) {
