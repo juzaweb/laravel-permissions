@@ -4,7 +4,6 @@ namespace Juzaweb\Permissions;
 
 use Illuminate\Routing\Route;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\View\Compilers\BladeCompiler;
 use Juzaweb\Core\Providers\ServiceProvider;
 use Juzaweb\Permissions\Contracts\Permission as PermissionContract;
@@ -24,21 +23,6 @@ class PermissionServiceProvider extends ServiceProvider
         $this->registerCommands();
 
         $this->registerModelBindings();
-
-        // Before check user permission
-        Gate::before(
-            function ($user, $ability) {
-                // Super admin has all permission
-                /** @var \App\Models\User $user */
-                if ($user->hasRoleAllPermissions()) {
-                    return true;
-                }
-
-                if ($user->isBanned()) {
-                    return false;
-                }
-            }
-        );
 
         $permissionLoader->clearClassPermissions();
         $permissionLoader->registerPermissions();
